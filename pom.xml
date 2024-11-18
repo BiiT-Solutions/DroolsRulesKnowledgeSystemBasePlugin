@@ -4,7 +4,7 @@
 	<groupId>com.biit.drools.plugins</groupId>
 	<artifactId>knowledge-base-client-plugin</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>BiiT Knowledge Base Access For Drools Rules</name>
 
 	<parent>
@@ -39,7 +39,7 @@
 	<scm>
 		<connection>scm:git:git.biit-solutions.com:Java/DroolsRuleKnowledgeSystemBasePlugin.git</connection>
 		<developerConnection>scm:git:git.biit-solutions.com:Java/DroolsRuleKnowledgeSystemBasePlugin.git</developerConnection>
-		<tag>knowledge-base-client-plugin</tag>
+		<tag>knowledge-base-client-plugin-0.0.1</tag>
 	</scm>
 
 	<dependencies>
