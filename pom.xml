@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.biit.drools.plugins</groupId>
+	<artifactId>knowledge-base-client-plugin</artifactId>
+	<packaging>jar</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>BiiT Knowledge Base Access For Drools Rules</name>
+
+	<parent>
+		<groupId>com.biit</groupId>
+		<artifactId>versions</artifactId>
+		<version>[0.1,0.2)</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<!-- Plugin definition -->
+		<plugin.id>knowledge-base</plugin.id>
+		<plugin.class>com.biit.drools.plugin.KnowledgeSystemPlugin</plugin.class>
+		<plugin.version>${project.version}</plugin.version>
+		<plugin.provider>BiiT Solutions</plugin.provider>
+		<plugin.dependencies />
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>libs-releases</name>
+			<url>https://artifactory.biit-solutions.com/artifactory/libs-release</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>libs-snapshot</name>
+			<url>https://artifactory.biit-solutions.com/artifactory/libs-snapshot</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:git:git.biit-solutions.com:Java/DroolsRuleKnowledgeSystemBasePlugin.git</connection>
+		<developerConnection>scm:git:git.biit-solutions.com:Java/DroolsRuleKnowledgeSystemBasePlugin.git</developerConnection>
+		<tag>knowledge-base-client-plugin</tag>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.biit</groupId>
+			<artifactId>plugin-manager-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Testing -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<!-- if this is not excluded and 'spring-boot-starter-log4j2' enabled,
+                testng causes a 'Cannot instantiate class' for all tests -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Include dependencies inside the JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven-assembly-plugin.version}</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<finalName>${plugin.id}-plugin</finalName>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<!-- PF4J: Mandatory to register the plugin. -->
+						<manifestEntries>
+							<Plugin-Id>${plugin.id}</Plugin-Id>
+							<Plugin-Version>${plugin.version}</Plugin-Version>
+							<Plugin-Provider>${plugin.provider}</Plugin-Provider>
+							<Plugin-Class>${plugin.class}</Plugin-Class>
+							<Plugin-Dependencies>${plugin.dependencies}</Plugin-Dependencies>
+						</manifestEntries>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven-surefire.version}</version>
+					<configuration>
+						<useFile>false</useFile>
+						<trimStackTrace>false</trimStackTrace>
+						<suiteXmlFiles>
+							<suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+						</suiteXmlFiles>
+						<useSystemClassLoader>false</useSystemClassLoader>
+					</configuration>
+				</plugin>
+		</plugins>
+	</build>
+
+</project>
